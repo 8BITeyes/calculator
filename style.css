@@ -62,11 +62,11 @@
     width: 234px;
 }
 
-.operatorbutton {
+#operator {
     background-color: orange;
 }
 
-.topbutton {
+#top {
     background-color: rgb(172, 172, 172);
 }
 
