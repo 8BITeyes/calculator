@@ -1,5 +1,5 @@
 //basic math functions
-const add = (a, b) => a + b;
+const add = (a, b) => parseInt(a) + parseInt(b);
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a/b;
@@ -11,7 +11,7 @@ function operate(operator, a, b){
         return subtract(a, b);
     } else if(operator === '*') {
         return multiply(a, b);
-    } else if(operator === '/') {
+    } else if (operator === '/') {
         return divide(a, b);
     }
 }
@@ -52,21 +52,35 @@ buttons.forEach(function(currentBtn) { //display changes based on text content o
 });
 
 //numbers and operations
-let numbers = []; //holds all inputted numbers
-let ops = []; //holds all inputted operators
+let firstNum;
+let secondNum;
+let operator;
 
-function currentNum() {
-    let num = displayValue;
-    numbers.push(num);
-    displayValue = '';
-    return num;
+function check() {
+    if (firstNum === undefined) {
+        firstNum = displayValue;
+    } else if (firstNum !== undefined) { //once secondNum is occuped operator function is called. firstNum is set to value.
+        secondNum = displayValue;
+        displayValue = operate(operator, firstNum, secondNum);
+        firstNum = displayValue;
+        secondNum = undefined;
+    }
 }
 
 const operators = document.querySelectorAll('#operator');
 operators.forEach(function(currentOp) {
-    currentOp.addEventListener('click', () => {
-        display.textContent += currentOp.textContent;
-        ops.push(currentOp.textContent);
-        currentNum();
+    currentOp.addEventListener('click', () => { //once operator is clicked current display value is added to variable and reset
+        display.textContent += `${currentOp.textContent}`;
+        check(); //add current display value to variable then resets display value
+        displayValue = '';
+        operator = currentOp.textContent;
     })
 });
+
+const sum = document.querySelector('.sum');
+sum.addEventListener('click', () => {
+    check();
+    firstNum = undefined;
+    secondNum = undefined;
+    display.textContent = displayValue;
+})
