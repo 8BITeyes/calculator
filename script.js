@@ -31,7 +31,9 @@ for(let i = 1; i <= 9; i++) { //adds buttons to html for each number 1 - 9
 let zero = document.createElement('button'); //adds 0 button (longer properties)
 bottomContainer.appendChild(zero);
 zero.textContent = 0;
-zero.classList.add('zerobutton');
+zero.classList.add('button');
+zero.value = zero.textContent;
+zero.id = 'zerobutton';
 
 let dot = document.createElement('button'); //adds "." button
 bottomContainer.appendChild(dot);
@@ -61,7 +63,25 @@ function check() {
         firstNum = displayValue;
     } else if (firstNum !== undefined) { //once secondNum is occuped operator function is called. firstNum is set to value.
         secondNum = displayValue;
-        displayValue = operate(operator, firstNum, secondNum);
+        
+        switch (secondNum === '') { //If user tries to operate with nothing, displayValue changes back to firstNum/ value
+            case true:
+                displayValue = parseInt(firstNum);
+                display.textContent = firstNum;
+                break;
+            case false:
+                displayValue = operate(operator, firstNum, secondNum)
+                break;
+        }
+
+        switch (Number.isInteger(displayValue)) { //rounds displayValue to 3 decimal points if non-integer
+            case false:
+                displayValue = displayValue.toFixed(3);
+                break;
+            default:
+                break;
+        }
+
         firstNum = displayValue;
         secondNum = undefined;
     }
@@ -72,6 +92,7 @@ operators.forEach(function(currentOp) {
     currentOp.addEventListener('click', () => { //once operator is clicked current display value is added to variable and reset
         display.textContent += `${currentOp.textContent}`;
         check(); //add current display value to variable then resets display value
+        display.textContent = displayValue + currentOp.textContent; //adds current displayValue/firstNum sum to display
         displayValue = '';
         operator = currentOp.textContent;
     })
