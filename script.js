@@ -49,7 +49,7 @@ const buttons = document.querySelectorAll('.button');
 buttons.forEach(function(currentBtn) { //display changes based on text content of *number* button pressed
     currentBtn.addEventListener('click', () => {
         displayValue += `${currentBtn.value}`;
-        display.textContent += currentBtn.textContent;
+        display.textContent = displayValue;
     })
 });
 
@@ -63,13 +63,13 @@ function check() {
         firstNum = displayValue;
     } else if (firstNum !== undefined) { //once secondNum is occuped operator function is called. firstNum is set to value.
         secondNum = displayValue;
-        
+
         switch (secondNum === '') { //If user tries to operate with nothing, displayValue changes back to firstNum/ value
             case true:
                 displayValue = parseInt(firstNum);
                 display.textContent = firstNum;
                 break;
-            case false:
+            default:
                 displayValue = operate(operator, firstNum, secondNum)
                 break;
         }
@@ -77,6 +77,14 @@ function check() {
         switch (Number.isInteger(displayValue)) { //rounds displayValue to 3 decimal points if non-integer
             case false:
                 displayValue = displayValue.toFixed(3);
+                break;
+            default:
+                break;
+        }
+
+        switch (displayValue === 'NaN') {
+            case true:
+                displayValue = 'Nope';
                 break;
             default:
                 break;
@@ -90,9 +98,18 @@ function check() {
 const operators = document.querySelectorAll('#operator');
 operators.forEach(function(currentOp) {
     currentOp.addEventListener('click', () => { //once operator is clicked current display value is added to variable and reset
-        display.textContent += `${currentOp.textContent}`;
         check(); //add current display value to variable then resets display value
         display.textContent = displayValue + currentOp.textContent; //adds current displayValue/firstNum sum to display
+
+        switch(displayValue === 'Infinity' || displayValue === '-Infinity' || displayValue === NaN) {
+            case true: //If displayValue returns Infinity, display set to WTF
+                firstNum = undefined;
+                display.textContent = 'WTF';
+                break;
+            default:
+                break;
+        }
+
         displayValue = '';
         operator = currentOp.textContent;
     })
@@ -104,4 +121,35 @@ sum.addEventListener('click', () => {
     firstNum = undefined;
     secondNum = undefined;
     display.textContent = displayValue;
-})
+    operator = undefined;
+});
+
+const allClear = document.querySelector('.clear');
+allClear.addEventListener('click', () => {
+    firstNum = undefined;
+    secondNum = undefined;
+    displayValue = '';
+    display.textContent = '';
+});
+
+const negative = document.querySelector('.negative');
+negative.addEventListener('click', () => {
+    switch(displayValue.slice(0,1) === "-") {
+        case false:
+            displayValue = '-' + displayValue;
+            display.textContent = displayValue;
+            break;
+        default:
+            break;
+    }
+});
+
+const backspace = document.querySelector('.back');
+backspace.addEventListener('click', () => {
+    let value = display.textContent.split('');
+    value.splice(-1, 1);
+    let newValue = value.join('');
+
+    displayValue = newValue;
+    display.textContent = newValue;
+});
