@@ -43,6 +43,7 @@ dot.value = ".";
 
 //display functions
 const display = document.querySelector('.display');
+const displayUnit = document.querySelector('.displayunit');
 let displayValue = '';
 
 const buttons = document.querySelectorAll('.button');
@@ -61,6 +62,7 @@ let operator;
 function check() {
     if (firstNum === undefined) {
         firstNum = displayValue;
+        displayUnit.textContent = `${firstNum}`;
     } else if (firstNum !== undefined) { //once secondNum is occuped operator function is called. firstNum is set to value.
         secondNum = displayValue;
 
@@ -89,7 +91,9 @@ function check() {
             default:
                 break;
         }
-
+        
+        displayUnit.textContent = `${firstNum}` + operator + `${secondNum}` + '=';
+        
         firstNum = displayValue;
         secondNum = undefined;
     }
@@ -99,7 +103,8 @@ const operators = document.querySelectorAll('#operator');
 operators.forEach(function(currentOp) {
     currentOp.addEventListener('click', () => { //once operator is clicked current display value is added to variable and reset
         check(); //add current display value to variable then resets display value
-        display.textContent = displayValue + currentOp.textContent; //adds current displayValue/firstNum sum to display
+        displayUnit.textContent += currentOp.textContent;
+        display.textContent = displayValue + currentOp.textContent;
 
         switch(displayValue === 'Infinity' || displayValue === '-Infinity' || displayValue === NaN) {
             case true: //If displayValue returns Infinity, display set to WTF

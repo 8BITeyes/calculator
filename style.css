@@ -70,6 +70,23 @@
     background-color: rgb(172, 172, 172);
 }
 
+.displaycontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.displayunit {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 50px;
+    width: 157px;
+    font-size: 30px;
+    color: white;
+}
+
 .display {
     display: flex;
     justify-content: end;
