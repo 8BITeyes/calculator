@@ -123,9 +123,18 @@ operators.forEach(function(currentOp) {
 const sum = document.querySelector('.sum');
 sum.addEventListener('click', () => {
     check();
+    switch(displayValue === 'Infinity') {
+        case false:
+            display.textContent = displayValue;
+            break;
+        case true:
+            displayValue = '';
+            display.textContent = 'WTF';
+            break;
+    }
+    
     firstNum = undefined;
     secondNum = undefined;
-    display.textContent = displayValue;
     operator = undefined;
 });
 
